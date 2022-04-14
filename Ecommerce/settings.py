@@ -135,5 +135,8 @@ STATICFILES_DIRS = [
     
     # Take us to the root directory and look for the static folder 
     os.path.join(BASE_DIR, 'static')
-
 ]
+
+MEDIA_URL = '/images/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static/images')
