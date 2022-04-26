@@ -77,22 +77,23 @@
 
     <script type="text/javascript">
 
-        // If the product is digital, it won't show the shipping information cart 
         var shipping = "{{ order.shipping }}";
         var total = "{{ order.get_cart_total|floatformat:2 }}";
         var user = "{{ request.user.is_authenticated }}";
-
+        
+        // If the product is digital, it won't show the shipping information cart 
         if (shipping == "False") {
             document.getElementById("shipping-info").innerHTML = "";
         }
-
+        
 
         // If the user log in, we don't need to show the name and email information
         if (user != "AnonymousUser") {
             document.getElementById("user-info").innerHTML = "";
         }
 
-
+        
+        
         if (shipping == "False" && user != "AnonymousUser") {
 
             // Hide entire form if user is logged in and shipping is false
@@ -101,7 +102,7 @@
             // Show payment if log in the user who wants to buy an item that does not require shipping
             document.getElementById("payment-info").classList.remove("hidden");
         }
-
+        
         
         // When the user click the "Continue" button, it will show the "Payment option" content.
         var form = document.getElementById("form");
@@ -156,13 +157,16 @@
                     "Content-Type": "application/json",
                     "X-CSRFToken": csrftoken,
                 },
-                body: JSON.stringify({ "form": userFormData, "shipping": shippingInfo})
+                body: JSON.stringify({ "form": userFormData, "shipping": shippingInfo })
             })
 
             .then((response) => response.json())
             .then((data) => {
                 console.log("Success", data);
                 alert("Transaction Complete");
+
+                cart = {};
+                document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
 
                 // Send the user back to the home page.
                 window.location.href = "{% url 'store' %}";
